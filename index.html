@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Titanic Survival Prediction</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 20px;
+
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1d3557;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+            margin-bottom: 30px;
+        }
+
+        .form-grid {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input,
+        select {
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 8px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #1d3557;
+        }
+
+        .button-box {
+            text-align: center;
+
+            margin-top: 30px;
+        }
+
+        button {
+            padding: 14px 40px;
+
+            background: #1d3557;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #457b9d;
+        }
+
+        .result {
+            margin-top: 30px;
+
+            padding: 20px;
+
+            background: #f1f5f9;
+
+            border-radius: 12px;
+
+            text-align: center;
+        }
+
+        .result h2 {
+            color: #1d3557;
+        }
+
+        .prediction {
+            font-size: 20px;
+
+            font-weight: bold;
+
+            color: #222;
+        }
+
+        .probability {
+            color: #555;
+
+            font-size: 16px;
+        }
+
+        .footer {
+            text-align: center;
+
+            margin-top: 25px;
+
+            color: #888;
+
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+        <h1>🚢 Titanic Survival Predictor</h1>
+
+        <p class="subtitle">
+            Logistic Regression Machine Learning Project
+        </p>
+
+
+        <form action="/predict" method="POST">
+
+            <div class="form-grid">
+
+
+                <!-- Passenger Class -->
+
+                <div class="form-group">
+
+                    <label>Passenger Class</label>
+
+                    <select name="pclass" required>
+
+                        <option value="">Select Class</option>
+
+                        <option value="1">
+                            1st Class
+                        </option>
+
+                        <option value="2">
+                            2nd Class
+                        </option>
+
+                        <option value="3">
+                            3rd Class
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Gender -->
+
+                <div class="form-group">
+
+                    <label>Gender</label>
+
+                    <select name="sex" required>
+
+                        <option value="">
+                            Select Gender
+                        </option>
+
+                        <option value="male">
+                            Male
+                        </option>
+
+                        <option value="female">
+                            Female
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Age -->
+
+                <div class="form-group">
+
+                    <label>Age</label>
+
+                    <input
+                        type="number"
+                        name="age"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                        placeholder="Enter age"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- SibSp -->
+
+                <div class="form-group">
+
+                    <label>Siblings / Spouses</label>
+
+                    <input
+                        type="number"
+                        name="sibsp"
+                        min="0"
+                        placeholder="Enter number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Parch -->
+
+                <div class="form-group">
+
+                    <label>Parents / Children</label>
+
+                    <input
+                        type="number"
+                        name="parch"
+                        min="0"
+                        placeholder="Enter number"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Fare -->
+
+                <div class="form-group">
+
+                    <label>Ticket Fare</label>
+
+                    <input
+                        type="number"
+                        name="fare"
+                        min="0"
+                        step="0.01"
+                        placeholder="Enter fare"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Embarked -->
+
+                <div class="form-group">
+
+                    <label>Port of Embarkation</label>
+
+                    <select name="embarked" required>
+
+                        <option value="">
+                            Select Port
+                        </option>
+
+                        <option value="C">
+                            Cherbourg (C)
+                        </option>
+
+                        <option value="Q">
+                            Queenstown (Q)
+                        </option>
+
+                        <option value="S">
+                            Southampton (S)
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="button-box">
+
+                <button type="submit">
+                    Predict Survival
+                </button>
+
+            </div>
+
+        </form>
+
+
+        {% if prediction %}
+
+        <div class="result">
+
+            <h2>Prediction Result</h2>
+
+            <p class="prediction">
+                {{ prediction }}
+            </p>
+
+            <p class="probability">
+                Survival Probability:
+                <strong>{{ probability }}%</strong>
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="footer">
+
+            Titanic Dataset | Logistic Regression
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
